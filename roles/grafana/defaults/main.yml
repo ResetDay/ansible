@@ -1,0 +1,9 @@
+---
+install_type: archive
+archive_url: https://dl.grafana.com/enterprise/release/grafana-enterprise-9.0.4.linux-amd64.tar.gz
+archive_checksum: 518f399c23058e3ba01a80cdff9765e7471167dd173d2d522eed5e75f0b9f61a
+checksum_format: sha256
+
+install_dir: /opt/grafana
+
+grafana_config_file: defaults.ini

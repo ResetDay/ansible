@@ -1,0 +1,49 @@
+---
+- name: Create installation directory
+  become: true
+  when: install_type == "archive"
+  file:
+    path: "{{ install_dir }}"
+    state: directory
+  tags:
+    - install
+
+- name: Download Nginx archive ({{ archive_url }})
+  become: true
+  when: install_type == "archive"
+  get_url:
+    url: "{{ archive_url }}"
+    dest: "/tmp/{{ archive_url | urlsplit('path') | basename }}"
+    mode: '0775'
+    force: yes
+  register: archive_tmp
+  tags:
+    - install
+
+- name: Extract Nginx archive
+  become: true
+  when: install_type == "archive"
+  unarchive:
+    src: "{{ archive_tmp.dest }}"
+    dest: "{{ install_dir }}"
+    mode: '0775'
+    remote_src: true
+    extra_opts:
+      - --strip-components
+      - '1'
+  tags:
+    - install
+
+- name: Install package
+  yum:
+    state: present
+    name:
+      - gcc
+      - pcre-devel
+  tags:
+    - install
+
+- name: Make And Install
+  shell: 'cd {{ install_dir }} && ./configure && make && sudo make install && /usr/local/nginx/sbin/nginx'
+  tags:
+    - install
