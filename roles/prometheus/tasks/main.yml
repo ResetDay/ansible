@@ -1,16 +1,14 @@
 ---
 - name: Create installation directory
   become: true
-  when: install_type == "archive"
   file:
     path: "{{ install_dir }}"
     state: directory
   tags:
     - install
 
-- name: Download Grafana archive ({{ archive_url }})
+- name: Download Prometheus archive ({{ archive_url }})
   become: true
-  when: install_type == "archive"
   get_url:
     url: "{{ archive_url }}"
     dest: "/tmp/{{ archive_url | urlsplit('path') | basename }}"
@@ -21,9 +19,8 @@
   tags:
     - install
 
-- name: Extract Grafana archive
+- name: Extract Prometheus archive
   become: true
-  when: install_type == "archive"
   unarchive:
     src: "{{ archive_tmp.dest }}"
     dest: "{{ install_dir }}"
@@ -35,18 +32,18 @@
   tags:
     - install
 
-- name: Copy Grafana configuration in place
+- name: Copy Prometheus configuration in place
   become: true
-  when: install_type == "archive"
   template:
-    src: "{{ grafana_config_file }}.j2"
-    dest: "{{ install_dir }}/conf/{{ grafana_config_file }}"
+    src: "{{ prometheus_config_file }}.j2"
+    dest: "{{ install_dir }}/{{ prometheus_config_file }}"
     force: true
   tags:
     - install
     - start
     - restart
     - update
+    - reload
 
 - name: Add Scripts
   template:
@@ -57,7 +54,7 @@
     - 'start.sh'
     - 'stop.sh'
     - 'restart.sh'
-
+    - 'reload.sh'
   tags:
     - install
     - start
@@ -65,21 +62,27 @@
     - restart
 
 
-- name: Start Grafana server
+- name: Start Prometheus server
   become: true
   shell: '{{ install_dir }}/scripts/start.sh'
   tags:
     - install
     - start
 
-- name: Stop Grafana server
+- name: Stop Prometheus server
   become: true
   shell: '{{ install_dir }}/scripts/stop.sh'
   tags:
     - stop
 
-- name: Restart Grafana server
+- name: Restart Prometheus server
   become: true
   shell: '{{ install_dir }}/scripts/restart.sh'
   tags:
     - restart
+
+- name: Reload Prometheus server
+  become: true
+  shell: '{{ install_dir }}/scripts/reload.sh'
+  tags:
+    - reload

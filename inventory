@@ -3,3 +3,6 @@ localhost
 
 [nginx]
 localhost
+
+[prometheus]
+localhost
