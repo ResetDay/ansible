@@ -7,3 +7,10 @@ checksum_format: sha256
 install_dir: /opt/grafana
 
 grafana_config_file: defaults.ini
+
+
+# Dashboard #
+grafana_dashboard_arg:
+  - category: 'host'
+    title:
+      - 'node-exporter-full'

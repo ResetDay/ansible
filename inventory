@@ -6,3 +6,6 @@ localhost
 
 [prometheus]
 localhost
+
+[node_exporter]
+localhost

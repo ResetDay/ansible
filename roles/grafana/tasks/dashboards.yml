@@ -1,0 +1,33 @@
+---
+- name: Copy Grafana Dashboards provisioning configuration.
+  template:
+    src: 'dashboards.yaml.j2'
+    dest: '{{ install_dir }}/conf/provisioning/dashboards/{{ item.category }}.yaml'
+  loop: '{{ grafana_dashboard_arg }}'
+  tags:
+    - install
+    - update
+    - start
+    - restart
+
+- name: Create Grafana Dashboards category.
+  file:
+    path: '{{ install_dir }}/conf/provisioning/dashboards/{{ item.category }}'
+    state: 'directory'
+  loop: '{{ grafana_dashboard_arg }}'
+  tags:
+    - install
+    - update
+    - start
+    - restart
+
+- name: Grafana dashboard file transfer.
+  copy:
+    src: 'dashboards/{{ item.0.category }}/{{ item.1 }}.json'
+    dest: '{{ install_dir }}/conf/provisioning/dashboards/{{ item.0.category }}/{{ item.1 }}.json'
+  loop: "{{ grafana_dashboard_arg|subelements('title') }}"
+  tags:
+    - install
+    - update
+    - start
+    - restart

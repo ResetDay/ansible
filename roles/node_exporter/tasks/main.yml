@@ -1,29 +1,26 @@
 ---
 - name: Create installation directory
   become: true
-  when: install_type == "archive"
   file:
     path: "{{ install_dir }}"
     state: directory
   tags:
     - install
 
-- name: Download Grafana archive ({{ archive_url }})
+- name: Download node_exporter archive ({{ archive_url }})
   become: true
-  when: install_type == "archive"
   get_url:
     url: "{{ archive_url }}"
     dest: "/tmp/{{ archive_url | urlsplit('path') | basename }}"
     checksum: "{{ (archive_checksum|length > 0) | ternary(checksum_format+':'+archive_checksum, '') }}"
     mode: '0775'
-    force: yes
+    force: '{{ force }}'
   register: archive_tmp
   tags:
     - install
 
-- name: Extract Grafana archive
+- name: Extract node_exporter archive
   become: true
-  when: install_type == "archive"
   unarchive:
     src: "{{ archive_tmp.dest }}"
     dest: "{{ install_dir }}"
@@ -35,19 +32,6 @@
   tags:
     - install
 
-- name: Copy Grafana configuration in place
-  become: true
-  when: install_type == "archive"
-  template:
-    src: "{{ grafana_config_file }}.j2"
-    dest: "{{ install_dir }}/conf/{{ grafana_config_file }}"
-    force: true
-  tags:
-    - install
-    - start
-    - restart
-    - update
-
 - name: Add Scripts
   template:
     src: 'templates/{{ item }}'
@@ -57,42 +41,31 @@
     - 'start.sh'
     - 'stop.sh'
     - 'restart.sh'
+    - 'control.sh'
 
   tags:
     - install
     - start
     - stop
     - restart
+    - update
 
 
-- name: Start Grafana server
+- name: Start node_exporter server
   become: true
-  shell: '{{ install_dir }}/scripts/start.sh'
+  shell: '{{ install_dir }}/scripts/start.sh {{ flags }}'
   tags:
     - install
     - start
 
-- name: Stop Grafana server
+- name: Stop node_exporter server
   become: true
   shell: '{{ install_dir }}/scripts/stop.sh'
   tags:
     - stop
-    - uninstall
 
-- name: Restart Grafana server
+- name: Restart node_exporter server
   become: true
-  shell: '{{ install_dir }}/scripts/restart.sh'
+  shell: '{{ install_dir }}/scripts/restart.sh {{ flags }}'
   tags:
     - restart
-
-- name: Uninstall Grafana server
-  become: true
-  shell: 'rm -rf {{ install_dir }}'
-  tags:
-    - uninstall
-
-- name: Include Datasources
-  include: "datasources.yml"
-
-- name: Include Dashboards
-  include: "dashboards.yml"

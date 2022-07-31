@@ -7,4 +7,4 @@ if [ 0 != $count ]; then
   {{ install_dir }}/scripts/stop.sh
 fi
 
-nohup {{ install_dir }}/bin/grafana-server -homepath {{ install_dir }} >> /dev/null 2>&1 &
+nohup {{ install_dir }}/bin/grafana-server -homepath {{ install_dir }} > /dev/null 2>&1 &

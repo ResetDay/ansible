@@ -1,4 +1,4 @@
-## grafana 手动安装方式
+## prometheus 手动安装方式
 
 ### 二进制安装
 ```
@@ -7,6 +7,8 @@ tar -zxvf prometheus-2.37.0.linux-amd64.tar.gz
 cd prometheus-2.37.0.linux-amd64
 ./prometheus
 ```
+
+
 
 
 

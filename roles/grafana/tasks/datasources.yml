@@ -1,0 +1,12 @@
+---
+- name: Grafana dashboard file transfer.
+  copy:
+    src: 'datasources/{{ item }}'
+    dest: '{{ install_dir }}/conf/provisioning/datasources/'
+  loop:
+    - 'prometheus.yaml'
+  tags:
+    - install
+    - update
+    - start
+    - restart
