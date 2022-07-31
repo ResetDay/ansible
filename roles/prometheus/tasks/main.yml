@@ -14,7 +14,7 @@
     dest: "/tmp/{{ archive_url | urlsplit('path') | basename }}"
     checksum: "{{ (archive_checksum|length > 0) | ternary(checksum_format+':'+archive_checksum, '') }}"
     mode: '0775'
-    force: yes
+    force: '{{ force }}'
   register: archive_tmp
   tags:
     - install

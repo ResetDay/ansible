@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-process_info=`ps -ef|grep prometheus|grep -v grep|grep -v stop`
+process_info=`ps -ef|grep {{ install_dir }}/prometheus|grep -v grep`
 echo $process_info
 if [ "$process_info" = "" ]; then
   exit 0

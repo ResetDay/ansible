@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-ps -ef|grep prometheus|grep -v grep|awk  '{print $2}'|xargs kill -HUP
+ps -ef|grep {{ install_dir }}/prometheus|grep -v grep|awk  '{print $2}'|xargs kill -HUP

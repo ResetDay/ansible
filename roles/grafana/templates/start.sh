@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-count=`ps -ef|grep grafana-server|grep -v grep|wc -l`
+COUNT=`ps -ef|grep {{ install_dir }}/bin/grafana-server|grep -v grep|wc -l`
 
-if [ 0 != $count ]; then
-  echo $count
+if [ 0 != $COUNT ]; then
   {{ install_dir }}/scripts/stop.sh
 fi
 
