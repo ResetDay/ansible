@@ -1,0 +1,12 @@
+---
+archive_url: https://mirrors.aliyun.com/apache/zookeeper/zookeeper-3.8.0/apache-zookeeper-3.8.0-bin.tar.gz?spm=a2c6h.25603864.0.0.31f215c0JD7Gne
+archive_checksum: d66e3a40451f840406901b2cd940992b001f92049a372ae48d8b420891605871cd1ae5f6cceb3b10665491e7abef36a4078dace158bd1e0938fcd3567b5234ca
+checksum_format: sha512
+force: no
+
+install_dir: /opt/zookeeper
+zookeeper_conf: zoo.cfg
+zookeeper_data_dir: /tmp/zookeeper
+zookeeper_client_port: 2181
+zookeeper_peer_port: 2888
+zookeeper_leader_port: 3888

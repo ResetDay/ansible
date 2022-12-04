@@ -17,3 +17,4 @@ tags说明：
 | nginx  | ansible-playbook -i inventory nginx.yml -t install  | 
 | prometheus  | ansible-playbook -i inventory prometheus.yml -t install/start/stop/restart/reload  | 
 | node_exporter  | ansible-playbook -i inventory node_exporter.yml -t install/start/stop/restart  | 
+| zookeeper  | ansible-playbook -i inventory zookeeper.yml -t install/start/stop  | 

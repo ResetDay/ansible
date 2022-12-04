@@ -9,3 +9,8 @@ localhost
 
 [node_exporter]
 localhost
+
+[zookeeper]
+host1
+host2
+host3
